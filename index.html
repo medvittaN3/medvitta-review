@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação - Medvitta</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body{
+      background-color: #f5f9fa;
+      font-family: "Figtree", sans-serif;
+    }
+
+    .review-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100dvh;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 200px;
+      max-width: 80%;
+      margin-bottom: 24px;
+    }
+
+    .review-mainText {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .review-mainText p {
+      font-weight: 300;
+      letter-spacing: 4px;
+      font-size: 14px;
+    }
+
+    .header {
+      font-weight: 800;
+      font-size: 28px;
+      background: linear-gradient(to right, #042462 13%, #0ed0e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .pós-avaliação{
+      width: 100%;
+      max-width: 350px;
+      font-weight: 500;
+      font-size: 14px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .review-stars{
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .star {
+      font-size: 70px;
+      color: #cccccc;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .star:hover {
+      transform: scale(1.1);
+      color: #e6e6e6;
+    }
+
+    .star.active {
+      background: linear-gradient(to right, #042462 13%, #0ed0e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .review-form{
+      margin-top: 24px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .review-form-user{
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .review-input{
+      font-family: 'Figtree', sans-serif;
+      font-size: 13px;
+      border-radius: 20px;
+      width: 100%;
+      height: 50px;
+      border: solid 1px transparent;
+      padding: 16px;
+      background: 
+        linear-gradient(#fff, #fff) padding-box, 
+        linear-gradient(220deg, rgba(14, 208, 224, 1) 0%, rgba(4, 36, 98, 1) 100%) border-box;
+    }
+
+    .review-input:focus{
+      outline: none;
+    }
+
+    #review-form-complain{
+      width: 100%;
+      height: 120px;
+      resize: none;
+      overflow: hidden;
+    }
+
+    .review-form-send{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .review-form-send button{
+      color: #F5FEFE;
+      background: linear-gradient(180deg, rgba(14, 208, 224, 1) 0%, rgba(4, 36, 98, 1) 100%);
+      font-size: 13px;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .review-form-send button:hover{
+      box-shadow: 1px 5px 21px -1px rgba(14, 208, 224, 0.6);
+    }
+
+    @media (max-width: 768px){
+      .header{ font-size: 22px; }
+      .star{ font-size: 50px; }
+      .review-form-user{ flex-direction: column; }
+      .logo{ width: 160px; }
+    }
+
+    @media (max-width: 480px){
+      .star{ font-size: 40px; }
+      .header{ font-size: 20px; }
+      .review-mainText p{
+        font-size: 12px;
+        letter-spacing: 3px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="review-container">
+  <img src="https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/empresa/logo/159944/ON__1_.png" class="logo">
+
+  <div class="review-text-stars">
+    <div class="review-mainText">
+      <p id="subtitle">Conta para gente</p>
+      <h2 class="header">Como foi sua experiência?</h2>
+
+      <span class="pós-avaliação negativo">
+        😔 Sentimos muito por você não ter tido uma boa experiência.
+        Conte para nós o que aconteceu. Vamos resolver isso rapidamente!
+      </span>
+
+      <span class="pós-avaliação positivo">
+        🎉 Obrigado pela sua avaliação! Redirecionando ...
+      </span>
+    </div>
+
+    <div class="review-stars">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+    </div>
+  </div>
+
+  <form class="review-form" id="form-feedback">
+    <div class="review-form-user">
+      <input class="review-input" id="name" type="text" placeholder="Digite seu nome" required>
+      <input class="review-input" id="atendente" type="text" placeholder="Quem te atendeu?" required>
+    </div>
+
+    <div class="review-form-send">
+      <textarea id="review-form-complain" class="review-input" placeholder="O que precisamos melhorar?" required></textarea>
+      <button type="submit">Enviar Avaliação</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const stars = document.querySelectorAll(".star");
+  const form = document.getElementById("form-feedback");
+  const negative = document.querySelector(".pós-avaliação.negativo");
+  const positive = document.querySelector(".pós-avaliação.positivo");
+  const subtitle = document.getElementById("subtitle");
+  const header = document.querySelector(".header");
+  let isClickable = false;
+
+  function hideMainText() {
+    const starsContainer = document.querySelector(".review-stars");
+    starsContainer.style.display = "none";
+    subtitle.style.display = "none";
+    header.style.display = "none";
+  }
+
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      if (isClickable) return;
+      isClickable = true;
+
+      const clickedStar = Number(star.dataset.value);
+
+      stars.forEach((s) => {
+        const starNumber = Number(s.dataset.value);
+        s.classList.remove("active");
+        if (starNumber <= clickedStar) {
+          s.classList.add("active");
+        }
+      });
+
+      if (clickedStar >= 4) {
+        positive.style.display = "block";
+
+        setTimeout(() => {
+          window.open(
+            "https://www.google.com/search?q=medvitta+avalia%C3%A7%C3%A3o+no+google#lrd=0xab535dd5c3bfbf:0x795bb47df5ca7bbd,3,,,,",
+            "_blank"
+          );
+        }, 2000);
+
+      } else {
+        form.style.display = "flex";
+        negative.style.display = "block";
+        hideMainText();
+      }
+    });
+  });
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name");
+    const atendente = document.getElementById("atendente");
+    const textarea = document.getElementById("review-form-complain");
+
+    const messageText = `Olá, aqui é o(a) ${name.value}.
+Gostaria de relatar um problema com o atendimento feito pelo(a) ${atendente.value}.
+
+Reclamação: ${textarea.value}
+
+Fico no aguardo de uma posição. Obrigado(a)!`;
+
+    const encodedMessage = encodeURIComponent(messageText);
+
+    window.open(`https://wa.me/5531995524260?text=${encodedMessage}`, "_blank");
+  });
+</script>
+
+</body>
+</html>
