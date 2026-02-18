@@ -223,10 +223,14 @@
   let isClickable = false;
 
   function hideMainText() {
-    const starsContainer = document.querySelector(".review-stars");
-    starsContainer.style.display = "none";
+
     subtitle.style.display = "none";
     header.style.display = "none";
+    
+    setTimeout(()=>{
+    const starsContainer = document.querySelector(".review-stars");
+    starsContainer.style.display = "none";
+    }, 1000)
   }
 
   stars.forEach((star) => {
