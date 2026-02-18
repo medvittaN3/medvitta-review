@@ -213,6 +213,7 @@
   </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
   const stars = document.querySelectorAll(".star");
   const form = document.getElementById("form-feedback");
@@ -220,6 +221,7 @@
   const positive = document.querySelector(".pós-avaliação.positivo");
   const subtitle = document.getElementById("subtitle");
   const header = document.querySelector(".header");
+  let clickedStar = 0;
   let isClickable = false;
 
   function hideMainText() {
@@ -238,7 +240,7 @@
       if (isClickable) return;
       isClickable = true;
 
-      const clickedStar = Number(star.dataset.value);
+      clickedStar = Number(star.dataset.value);
 
       stars.forEach((s) => {
         const starNumber = Number(s.dataset.value);
@@ -252,10 +254,7 @@
         positive.style.display = "block";
 
         setTimeout(() => {
-          window.open(
-            "https://g.page/r/Cb17yvV9tFt5EBM/review",
-            "_blank"
-          );
+          window.location.href = "https://g.page/r/Cb17yvV9tFt5EBM/review"; //Ass: Aurélio - Alterado por causa do Safari, bloqueia window.open
         }, 2000);
 
       } else {
@@ -266,7 +265,41 @@
     });
   });
 
-  form.addEventListener("submit", function(e) {
+  emailjs.init("1zaYp72S_TuPS-vQw");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const emailAddress = document.getElementById("atendente").value;
+  const textarea = document.getElementById("review-form-complain").value;
+
+  const templateParams = {
+    rating: clickedStar,
+    from_name: name,
+    message: textarea,
+    reply_to: emailAddress,
+    page_url: window.location.href,
+    date: new Date().toLocaleString()
+  };
+
+  emailjs.send("service_bfhsznd", "template_olgznss", templateParams)
+    .then(function (response) {
+      console.log("SUCESSO!", response.status, response.text);
+      
+      negative.style.display = "none";
+      form.style.display = "none";
+
+      alert("Recebemos sua mensagem. Obrigado por nos avisar!");
+    })
+
+    .catch(function (error) {
+      console.log("ERRO...", error);
+      alert("Erro ao enviar. Tente novamente.");
+    });
+});
+
+  /*form.addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("name");
@@ -283,7 +316,7 @@ Fico no aguardo de uma posição. Obrigado(a)!`;
     const encodedMessage = encodeURIComponent(messageText);
 
     window.open(`https://wa.me/5531995524260?text=${encodedMessage}`, "_blank");
-  });
+  });*/
 </script>
 
 </body>
