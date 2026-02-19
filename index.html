@@ -1,322 +1,416 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Avaliação - Medvitta</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação - Medvitta</title>
 
-  <!-- Fonte -->
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;800&display=swap" rel="stylesheet">
+<!-- Fonte -->
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;500;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    *{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
-    body{
-      background-color: #f5f9fa;
-      font-family: "Figtree", sans-serif;
-    }
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    .review-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 100dvh;
-      padding: 24px;
-      text-align: center;
-    }
+<style>
 
-    .logo {
-      width: 200px;
-      max-width: 80%;
-      margin-bottom: 24px;
-    }
+*{
+  font-family: "Figtree", sans-serif;
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
 
-    .review-mainText {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:20px;
+  background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 50%, #e0f2fe 100%);
+}
 
-    .review-mainText p {
-      font-weight: 300;
-      letter-spacing: 4px;
-      font-size: 14px;
-    }
+.logo{
+  min-width:100px;
+  max-width:200px;
+  width:100%;
+  margin-bottom:15px;
+}
 
-    .header {
-      font-weight: 800;
-      font-size: 28px;
-      background: linear-gradient(to right, #042462 13%, #0ed0e0 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+.review-container{
+  width:100%;
+  max-width:520px;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(18px);
+  border-radius:24px;
+  padding:40px 32px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
+}
 
-    .pós-avaliação{
-      width: 100%;
-      max-width: 350px;
-      font-weight: 500;
-      font-size: 14px;
-      margin-top: 8px;
-      display: none;
-    }
+.review-text-stars{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
 
-    .review-stars{
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
+.review-main-text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
 
-    .star {
-      font-size: 70px;
-      color: #cccccc;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
+.header{
+  background: linear-gradient(to right, #042462 13%, #0ed0e0 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:8px;
+}
 
-    .star:hover {
-      transform: scale(1.1);
-      color: #e6e6e6;
-    }
+#subtitle{
+  letter-spacing:2px;
+  font-size:13px;
+  color:#6b7280;
+  font-weight:500;
+}
 
-    .star.active {
-      background: linear-gradient(to right, #042462 13%, #0ed0e0 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+.response{
+  font-size:13px;
+  margin-top:10px;
+  width:80%;
+  text-align:center;
+}
 
-    .review-form{
-      margin-top: 24px;
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      max-width: 350px;
-    }
+.review-stars{
+  display:flex;
+  gap:12px;
+  margin-top:20px;
+  margin-bottom:25px;
+}
 
-    .review-form-user{
-      display: flex;
-      gap: 10px;
-      width: 100%;
-    }
+.star{
+  font-size:42px;
+  cursor:pointer;
+  color:#d1d5db;
+  transition:all 0.25s ease;
+}
 
-    .review-input{
-      font-family: 'Figtree', sans-serif;
-      font-size: 13px;
-      border-radius: 20px;
-      width: 100%;
-      height: 50px;
-      border: solid 1px transparent;
-      padding: 16px;
-      background: 
-        linear-gradient(#fff, #fff) padding-box, 
-        linear-gradient(220deg, rgba(14, 208, 224, 1) 0%, rgba(4, 36, 98, 1) 100%) border-box;
-    }
+.star:hover{
+  transform:scale(1.25);
+}
 
-    .review-input:focus{
-      outline: none;
-    }
+.star.active{
+  color:#facc15;
+  font-variation-settings:'FILL' 1;
+  transform:scale(1.15);
+}
 
-    #review-form-complain{
-      width: 100%;
-      height: 120px;
-      resize: none;
-      overflow: hidden;
-    }
+/* FORM */
 
-    .review-form-send{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+#form-feedback{
+  display:none;
+  flex-direction:column;
+  width:100%;
+  max-width:480px;
+  background:#ffffff;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+  padding:32px;
+}
 
-    .review-form-send button{
-      color: #F5FEFE;
-      background: linear-gradient(180deg, rgba(14, 208, 224, 1) 0%, rgba(4, 36, 98, 1) 100%);
-      font-size: 13px;
-      padding: 10px;
-      border: none;
-      border-radius: 20px;
-      width: 100%;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+h2{
+  color:#1f2937;
+  font-size:20px;
+  margin-bottom:8px;
+}
 
-    .review-form-send button:hover{
-      box-shadow: 1px 5px 21px -1px rgba(14, 208, 224, 0.6);
-    }
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-    @media (max-width: 768px){
-      .header{ font-size: 22px; }
-      .star{ font-size: 50px; }
-      .review-form-user{ flex-direction: column; }
-      .logo{ width: 160px; }
-    }
+.form-group label{
+  font-size:13px;
+  font-weight:600;
+  color:#374151;
+}
 
-    @media (max-width: 480px){
-      .star{ font-size: 40px; }
-      .header{ font-size: 20px; }
-      .review-mainText p{
-        font-size: 12px;
-        letter-spacing: 3px;
-      }
-    }
-  </style>
+input, textarea{
+  width:100%;
+  font-size:14px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  padding:14px 16px;
+  background-color:#ffffff;
+  transition:all 0.25s ease;
+}
+
+input:focus, textarea:focus{
+  outline:none;
+  border:1px solid rgba(14,208,224,1);
+  box-shadow:0 0 0 3px rgba(14,208,224,0.15);
+}
+
+.step{
+  display:none;
+  flex-direction:column;
+  gap:18px;
+}
+
+.step.active{
+  display:flex;
+}
+
+button{
+  margin-top:8px;
+  color:#ffffff;
+  background: linear-gradient(180deg, rgba(14,208,224,1) 0%, rgba(4,36,98,1) 100%);
+  font-size:14px;
+  font-weight:600;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.25s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(4,36,98,0.15);
+}
+
+#back-button{
+  background:#e5e7eb;
+  color:#374151;
+}
+
+#warning{
+  display:none;
+  margin-top:10px;
+  font-size:13px;
+  font-weight:500;
+  color:#dc2626;
+  background-color:#fef2f2;
+  padding:10px 14px;
+  border-radius:8px;
+  border:1px solid #fecaca;
+  text-align:center;
+}
+
+#warning.show{
+  display:block;
+  animation:shake 0.3s ease;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0);}
+  20%{transform:translateX(-4px);}
+  40%{transform:translateX(4px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+  100%{transform:translateX(0);}
+}
+
+</style>
 </head>
 <body>
 
 <div class="review-container">
-  <img src="https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/empresa/logo/159944/ON__1_.png" class="logo">
 
-  <div class="review-text-stars">
-    <div class="review-mainText">
-      <p id="subtitle">Conta para gente</p>
-      <h2 class="header">Como foi sua experiência?</h2>
+<div class="review-text-stars">
+<img src="https://c5gwmsmjx1.execute-api.us-east-1.amazonaws.com/prod/empresa/logo/159944/ON__1_.png" class="logo">
 
-      <span class="pós-avaliação negativo">
-        😔 Sentimos muito por você não ter tido uma boa experiência.
-        Conte para nós o que aconteceu. Vamos resolver isso rapidamente!
-      </span>
-
-      <span class="pós-avaliação positivo">
-        🎉 Obrigado pela sua avaliação! Redirecionando ...
-      </span>
-    </div>
-
-    <div class="review-stars">
-      <span class="star" data-value="1">★</span>
-      <span class="star" data-value="2">★</span>
-      <span class="star" data-value="3">★</span>
-      <span class="star" data-value="4">★</span>
-      <span class="star" data-value="5">★</span>
-    </div>
-  </div>
-
-  <form class="review-form" id="form-feedback">
-    <div class="review-form-user">
-      <input class="review-input" id="name" type="text" placeholder="Digite seu nome" required>
-      <input class="review-input" id="atendente" type="text" placeholder="Quem te atendeu?" required>
-    </div>
-
-    <div class="review-form-send">
-      <textarea id="review-form-complain" class="review-input" placeholder="O que precisamos melhorar?" required></textarea>
-      <button type="submit">Enviar Avaliação</button>
-    </div>
-  </form>
+<div class="review-main-text">
+<p id="subtitle">Conta para gente</p>
+<h2 class="header">Como foi sua experiência?</h2>
+<p class="response" id="positive" style="display:none">🎉 Obrigado pela sua avaliação! Redirecionando...</p>
+<p class="response" id="negative" style="display:none">😔 Sentimos muito pela experiência. Abrindo formulário...</p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<div class="review-stars">
+<span class="material-symbols-outlined star" data-value="1">kid_star</span>
+<span class="material-symbols-outlined star" data-value="2">kid_star</span>
+<span class="material-symbols-outlined star" data-value="3">kid_star</span>
+<span class="material-symbols-outlined star" data-value="4">kid_star</span>
+<span class="material-symbols-outlined star" data-value="5">kid_star</span>
+</div>
+</div>
+
+<form id="form-feedback">
+
+<div class="step step-1 active">
+<h2>Informações Iniciais - Suporte Medvitta</h2>
+
+<div class="form-group">
+<label>Seu nome</label>
+<input type="text" id="name" required>
+</div>
+
+<div class="form-group">
+<label>Nome do atendente (Opcional)</label>
+<input type="text" id="atendente">
+</div>
+
+<div class="form-group">
+<label>Descreva sua reclamação</label>
+<textarea id="complaint" rows="4" required></textarea>
+</div>
+
+<button type="button" id="next-button">Próximo</button>
+</div>
+
+<div class="step step-2">
+
+<div class="form-group">
+<label>Seu e-mail</label>
+<input type="email" id="email" required>
+</div>
+
+<div class="form-group">
+<label>Seu telefone</label>
+<input type="tel" id="phone" required placeholder="(00) 00000-0000">
+</div>
+
+<div class="form-group">
+<label>Data da compra</label>
+<input type="date" id="purchaseDate">
+</div>
+
+<div class="form-group">
+<label>Número do ticket (Opcional)</label>
+<input type="text" id="ticket" maxlength="8">
+</div>
+
+<div class="form-group">
+<label>Produto</label>
+<input type="text" id="product">
+</div>
+
+<button type="button" id="back-button">Voltar</button>
+<button type="submit">Enviar</button>
+</div>
+
+<span id="warning">*Preencha os campos obrigatórios antes de continuar.</span>
+
+</form>
+</div>
+
 <script>
-  const stars = document.querySelectorAll(".star");
-  const form = document.getElementById("form-feedback");
-  const negative = document.querySelector(".pós-avaliação.negativo");
-  const positive = document.querySelector(".pós-avaliação.positivo");
-  const subtitle = document.getElementById("subtitle");
-  const header = document.querySelector(".header");
-  let clickedStar = 0;
-  let isClickable = false;
 
-  function hideMainText() {
+// EMAILJS
+emailjs.init("1zaYp72S_TuPS-vQw");
 
-    subtitle.style.display = "none";
-    header.style.display = "none";
-    
-    setTimeout(()=>{
-    const starsContainer = document.querySelector(".review-stars");
-    starsContainer.style.display = "none";
-    }, 1000)
-  }
+// ===== STARS =====
+const stars = document.querySelectorAll('.star');
+const form = document.getElementById("form-feedback");
+let isClicked = false;
 
-  stars.forEach((star) => {
-    star.addEventListener("click", () => {
-      if (isClickable) return;
-      isClickable = true;
+stars.forEach(star=>{
+star.addEventListener("click", ()=>{
+if(isClicked) return;
+isClicked = true;
 
-      clickedStar = Number(star.dataset.value);
+const value = Number(star.dataset.value);
 
-      stars.forEach((s) => {
-        const starNumber = Number(s.dataset.value);
-        s.classList.remove("active");
-        if (starNumber <= clickedStar) {
-          s.classList.add("active");
-        }
-      });
-
-      if (clickedStar >= 4) {
-        positive.style.display = "block";
-
-        setTimeout(() => {
-          window.location.href = "https://g.page/r/Cb17yvV9tFt5EBM/review"; //Ass: Aurélio - Alterado por causa do Safari, bloqueia window.open
-        }, 2000);
-
-      } else {
-        form.style.display = "flex";
-        negative.style.display = "block";
-        hideMainText();
-      }
-    });
-  });
-
-  emailjs.init("1zaYp72S_TuPS-vQw");
-
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const emailAddress = document.getElementById("atendente").value;
-  const textarea = document.getElementById("review-form-complain").value;
-
-  const templateParams = {
-    rating: clickedStar,
-    from_name: name,
-    message: textarea,
-    reply_to: emailAddress,
-    page_url: window.location.href,
-    date: new Date().toLocaleString()
-  };
-
-  emailjs.send("service_bfhsznd", "template_olgznss", templateParams)
-    .then(function (response) {
-      console.log("SUCESSO!", response.status, response.text);
-      
-      negative.style.display = "none";
-      form.style.display = "none";
-
-      alert("Recebemos sua mensagem. Obrigado por nos avisar!");
-    })
-
-    .catch(function (error) {
-      console.log("ERRO...", error);
-      alert("Erro ao enviar. Tente novamente.");
-    });
+stars.forEach(s=>{
+if(Number(s.dataset.value)<=value){
+s.classList.add("active");
+}
 });
 
-  /*form.addEventListener("submit", function(e) {
-    e.preventDefault();
+const subtitle = document.getElementById("subtitle");
+const header = document.querySelector(".header");
 
-    const name = document.getElementById("name");
-    const atendente = document.getElementById("atendente");
-    const textarea = document.getElementById("review-form-complain");
+if(value>=4){
+document.getElementById("positive").style.display="block";
+subtitle.style.display="none";
+header.style.display="none";
 
-    const messageText = `Olá, aqui é o(a) ${name.value}.
-Gostaria de relatar um problema com o atendimento feito pelo(a) ${atendente.value}.
+setTimeout(()=>{
+window.location.href="https://g.page/r/Cb17yvV9tFt5EBM/review";
+},1000);
 
-Reclamação: ${textarea.value}
+}else{
+document.getElementById("negative").style.display="block";
+subtitle.style.display="none";
+header.style.display="none";
 
-Fico no aguardo de uma posição. Obrigado(a)!`;
+setTimeout(()=>{
+document.querySelector(".review-stars").style.display="none";
+document.getElementById("negative").style.display="none";
+form.style.display="flex";
+},3000);
+}
+});
+});
 
-    const encodedMessage = encodeURIComponent(messageText);
+// ===== STEP FORM =====
+const step1=document.querySelector(".step-1");
+const step2=document.querySelector(".step-2");
 
-    window.open(`https://wa.me/5531995524260?text=${encodedMessage}`, "_blank");
-  });*/
+document.getElementById("next-button").addEventListener("click",()=>{
+const name=document.getElementById("name");
+const complaint=document.getElementById("complaint");
+
+if(!name.value || !complaint.value){
+const warning=document.getElementById("warning");
+warning.classList.add("show");
+setTimeout(()=>warning.classList.remove("show"),2000);
+return;
+}
+
+step1.classList.remove("active");
+step2.classList.add("active");
+});
+
+document.getElementById("back-button").addEventListener("click",()=>{
+step2.classList.remove("active");
+step1.classList.add("active");
+});
+
+// ===== TELEFONE MASK =====
+document.getElementById("phone").addEventListener("input",function(e){
+let v=e.target.value.replace(/\D/g,"").slice(0,11);
+if(v.length<=10){
+v=v.replace(/(\d{2})(\d)/,"($1) $2");
+v=v.replace(/(\d{4})(\d)/,"$1-$2");
+}else{
+v=v.replace(/(\d{2})(\d)/,"($1) $2");
+v=v.replace(/(\d{5})(\d)/,"$1-$2");
+}
+e.target.value=v;
+});
+
+// ===== SUBMIT =====
+form.addEventListener("submit",function(e){
+e.preventDefault();
+
+const formData={
+name:name.value,
+atendente:atendente.value,
+complaint:complaint.value,
+ticket:ticket.value,
+email:email.value,
+phone:phone.value,
+product:product.value,
+purchaseDate:purchaseDate.value,
+year:new Date().getFullYear()
+};
+
+emailjs.send("service_bfhsznd","template_olgznss",formData)
+.then(()=>{
+document.querySelector(".review-container").innerHTML="<p class='response'>✅ Formulário enviado com sucesso!</p>";
+})
+.catch(()=>{
+alert("Erro ao enviar. Tente novamente.");
+});
+});
+
 </script>
 
 </body>
