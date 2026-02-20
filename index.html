@@ -41,6 +41,9 @@ body{
 }
 
 .review-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width:100%;
   max-width:520px;
   background:rgba(255,255,255,0.65);
@@ -289,7 +292,7 @@ button:hover{
 
 <div class="form-group">
 <label>Produto</label>
-<input type="text" id="product">
+<input type="text" id="product" placeholder="(ex: Laudo de Piscina, Abono de Falta ...)">
 </div>
 
 <button type="button" id="back-button">Voltar</button>
@@ -353,10 +356,13 @@ form.style.display="flex";
 // ===== STEP FORM =====
 const step1=document.querySelector(".step-1");
 const step2=document.querySelector(".step-2");
+const name=document.getElementById("name");
 
 document.getElementById("next-button").addEventListener("click",()=>{
-const name=document.getElementById("name");
+
 const complaint=document.getElementById("complaint");
+
+console.log(name.value);
 
 if(!name.value || !complaint.value){
 const warning=document.getElementById("warning");
@@ -387,12 +393,13 @@ v=v.replace(/(\d{5})(\d)/,"$1-$2");
 e.target.value=v;
 });
 
+
 // ===== SUBMIT =====
 form.addEventListener("submit",function(e){
 e.preventDefault();
 
 const formData={
-name:name.value,
+name: name.value,
 atendente:atendente.value,
 complaint:complaint.value,
 ticket:ticket.value,
@@ -405,7 +412,7 @@ year:new Date().getFullYear()
 
 emailjs.send("service_bfhsznd","template_olgznss",formData)
 .then(()=>{
-document.querySelector(".review-container").innerHTML="<p class='response'>✅ Formulário enviado com sucesso!</p>";
+document.querySelector(".review-container").innerHTML=`<p class='response'><b>${name.value}</b>, recebemos seu relato com muita atenção e já o encaminhamos à nossa coordenação para análise detalhada.<br><br>Lamentamos sinceramente que sua experiência não tenha sido a esperada. Seu feedback é muito importante para nós e está sendo utilizado para aprimorar nossos processos e atendimento.<br><br>💙 Agradecemos por compartilhar sua experiência e nos ajudar a evoluir continuamente.</p>`;
 })
 .catch(()=>{
 alert("Erro ao enviar. Tente novamente.");
